@@ -1,11 +1,11 @@
 import { Component, OnInit} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostsService } from '../post.service';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Post } from '../post.model';
 
-
+//dummy comment
 
 @Component( {
   selector: 'app-post-create',
@@ -19,6 +19,7 @@ export  class PostCreateComponent implements OnInit{
   private mode = 'create';
   private postID: string;
   isLoading = false;
+  form: FormGroup;
 
 
 
@@ -36,6 +37,14 @@ export  class PostCreateComponent implements OnInit{
   */
 
   ngOnInit() {
+    this.form = new FormGroup({
+      title: new FormControl(null, { //null works only for the new posts. for edits, set it in subscribe
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      content: new FormControl(null, {validators: [Validators.required]}),
+      image: new FormControl(null, {validators: [Validators.required]})
+
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('postID')) {
         this.mode='edit';
@@ -44,8 +53,16 @@ export  class PostCreateComponent implements OnInit{
         this.postService.getPostForEdit(this.postID)
           .subscribe(postData => {
             this.isLoading=false; //when we are inside the subscription, we must be done loading
-            this.post = {id: postData._id, title: postData.title, content: postData.content};
-
+            this.post = {
+              id: postData._id,
+              title: postData.title,
+              content: postData.content
+            };
+            this.form.setValue({
+              title: this.post.title,
+              content: this.post.content,
+              image: null
+            });
           })
 
       } else {
@@ -55,30 +72,44 @@ export  class PostCreateComponent implements OnInit{
     });
   }
 
-  onSavePost(form: NgForm) {
-    if(form.invalid){
+  onImagePicked(event: Event) {
+    /*
+    Event is a default type provided by TS outofthebox cuz its a default JS type
+    */
+    //The problem just is Typescript doesn't know that our event target actually is an input, a file input and therefore
+    //it doesn't know that this file's property exists so typecasting it to the HTMLInputElement and then use the files property
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image: file}); //patchvalue is used to update only a specific control in the FromGroup
+    this.form.get('image').updateValueAndValidity();
+    console.log(file);
+    console.log(this.form);
+  }
+
+  onSavePost() {
+    if(this.form.invalid){
       return;
     }
     if(this.mode === 'create') {
-      this.postService.addPost(form.value.title, form.value.content);
+      this.postService.addPost(this.form.value.title, this.form.value.content);
     } else {
-      this.postService.updatePost(this.postID, form.value.title, form.value.content);
+      this.postService.updatePost(this.postID, this.form.value.title, this.form.value.content);
     }
-    form.resetForm();
+    this.form.reset();
   }
+/*
+  public onAddPost() {
 
-  public onAddPost(form: NgForm) {
-
-    if(form.invalid) {
+    if(this.form.invalid) {
       return;
     }
 
-    this.postService.addPost(form.value.title, form.value.content);
-    form.resetForm();
+    this.postService.addPost(this.form.value.title, this.form.value.content);
+    this.form.resetForm();
   }
 
   public onClearPost(form: NgForm) {
     return form;
   }
+  */
 
 }

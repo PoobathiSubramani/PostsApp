@@ -1,35 +1,29 @@
 
 <mat-card>
   <mat-spinner mode="indeterminate" *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
     <mat-form-field>
       <input
         matInput
         type="text"
-        name="title"
-        [ngModel]="post?.title"
-        required
-        placeholder="Title"
-        #title="ngModel">
-        <mat-error *ngIf="title.invalid">Please enter a post title</mat-error>
+        formControlName="title"
+        placeholder="Title">
+        <mat-error *ngIf="form.get('title').invalid">Please enter a post title</mat-error>
 
     </mat-form-field>
     <div>
       <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-      <input type="file" #filePicker> <!--this button looks ugly. so we want to hide it and implement its func using the abv button-->
+      <input type="file" #filePicker (change)="onImagePicked($event)"> <!--this button looks ugly. so we want to hide it and implement its func using the abv button-->
+      <!--the $event can be used to access this change in the image-->
     </div>
     <mat-form-field>
       <textarea
         matInput
         rows="6"
-        name ="content"
-        [ngModel]="post?.content"
-        required
-        placeholder="Content"
-        minlength="3"
-        #content="ngModel">
+        formControlName="content"
+        placeholder="Content">
       </textarea>
-        <mat-error *ngIf="content.invalid"> Please enter a valid post content </mat-error>
+        <mat-error *ngIf="form.get('content').invalid"> Please enter a valid post content </mat-error>
     </mat-form-field>
     <button
       mat-raised-button
