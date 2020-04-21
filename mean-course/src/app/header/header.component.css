@@ -1,0 +1,14 @@
+a {
+  text-decoration: none;
+  color: rgb(48, 48, 54);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuSpacer{
+  flex: 1 1 auto;
+}

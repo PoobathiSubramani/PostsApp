@@ -1,0 +1,13 @@
+<mat-toolbar color="accent">
+  <span>
+    <a routerLink='/'>My Messages</a>
+  </span>
+  <span class='menuSpacer'> </span> <!-- this will help to align the menu items with right space. spacer clss is used in CSS-->
+  <ul>
+    <li>
+      <a mat-button routerLink='/create' routerLinkActive="mat-primary">New Post</a>
+      <!-- routerlinkactive helps to highlight by applying a seperate CSS file the menu item when we are on it-->
+      <!--mat-accent is a helper css file inbuilt in angular-->
+    </li>
+  </ul>
+</mat-toolbar>
