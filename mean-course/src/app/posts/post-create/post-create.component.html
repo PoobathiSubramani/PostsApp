@@ -16,8 +16,8 @@
       <input type="file" #filePicker (change)="onImagePicked($event)"> <!--this button looks ugly. so we want to hide it and implement its func using the abv button-->
       <!--the $event can be used to access this change in the image-->
     </div>
-    <div class="image-preview" *ngIf="imagePreview != '' && imagePreview">
-      <!--show the image preview only if the url has something and its not null-->
+    <div class="image-preview" *ngIf="imagePreview != '' && imagePreview && form.get('image').valid">
+      <!--show the image preview only if the url has something and its not null and also it is an image-->
       <img [src]="imagePreview" [alt]="form.value.title">
     </div>
     <mat-form-field>
