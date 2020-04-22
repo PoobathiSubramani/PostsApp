@@ -52,13 +52,27 @@ export class PostsService {
     // - list-component.ts -> ngOnInit() - using Subscribe()
   };
 
-  addPost(title: string, content: string) {
+  addPost(title: string, content: string, image: File) {
     const post: Post = {id: null, title: title, content: content}; //create a new post variables of type Post
+
+    //earlier the post was having only the json data. now with the image to be uploaded, we do the following
+    //create a variable of type form data
+    const postData = new FormData(); //this allows to combine text as well as blob
+    postData.append("title", title);
+    postData.append("content", content);
+    postData.append("image", image, title);
+
     //seding post to the server
-    this.http.post<{message: string, postID: string}>('http://localhost:3000/api/posts', post)
+    this.http.post<{message: string, postID: string}>(
+      'http://localhost:3000/api/posts',
+      postData)
     .subscribe((responseData) => {
-        const id = responseData.postID;
-        post.id = id; //this will update the id of the post in the app from the db row
+        const post: Post = {
+          id: responseData.postID,
+          title: title,
+          content: content
+        };
+
         console.log(responseData.message);
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]) //this is sort of emitting whenever we add a post through addPost()

@@ -8,12 +8,18 @@ const mongoose = require('mongoose');
 const postsRoutes = require('./routes/posts');
 
 //dbname - node-angular //can be user defined as well
-mongoose.connect("mongodb+srv://dbuser:dbpwd09@boomongocluster-rcqr2.azure.mongodb.net/node-angular?retryWrites=true&w=majority")
+mongoose.connect(
+  //"mongodb+srv://dbuser:dbpwd09@boomongocluster-rcqr2.azure.mongodb.net/node-angular?retryWrites=true&w=majority",
+  "mongodb+srv://dbuser:dbpwd09@boomongocluster-rcqr2.azure.mongodb.net/node-angular?retryWrites=true&w=majority",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  })
   .then (() => {
     console.log('connected to db!');
   })
   .catch(() => {
-    console.log('connection failed!');
+    console.log('Mongo DB connection failed!');
   })
 
 
