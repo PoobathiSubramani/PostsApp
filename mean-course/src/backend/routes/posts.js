@@ -33,17 +33,29 @@ const storage = multer.diskStorage ({//tell where multer to put files
 )
 
 router.post("",multer({storage: storage}).single('image'), (req, res, next) => {
-  //const post = req.body; //this will take the post found in the body of the request and assigns to post variable
+
+  //creating the url for the server
+  const url = req.protocol + '://' + req.get('host'); //protocol -> to know if it is http or https;
+
   const post = new Post({
+  //const post = req.body; //this will take the post found in the body of the request and assigns to post variable
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    imagePath: url + '/images/' +  req.file.filename
   });
   post.save()
     .then (createdPost => { //createdPost is the name of the placeholder which contains the results
       console.log(createdPost);
       res.status(201).json({
         message: "post added succesfully",
-        postID: createdPost._id
+        post: {
+          id: createdPost._id,
+          title: createdPost.title,
+          content: createdPost.content,
+          imagePath: createdPost.imagePath
+          //replaceing the title, content and imagepath can be done simply by replacing
+          //the three variables and using the ...createdPost.
+        }
       });
   //console.log(post);
 

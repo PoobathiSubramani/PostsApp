@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 const postsRoutes = require('./routes/posts');
+const path = require('path'); //this allows to map the url to a specific path in the server
 
 //dbname - node-angular //can be user defined as well
 mongoose.connect(
@@ -32,6 +33,8 @@ expressApp.use ((req, res, next) => {
 */
 
 expressApp.use(bodyParser.json());
+expressApp.use(bodyParser.urlencoded({extended: false}));
+expressApp.use("/images", express.static(path.join("backend/images"))) //add this to allow access to the image folder for the url that has image folder
 
 expressApp.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); //this is to avoid cross-origin script issue

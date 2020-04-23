@@ -28,7 +28,8 @@ export class PostsService {
           return {
             title: post.title,
             content: post.content,
-            id: post._id
+            id: post._id,
+            imagePath: post.imagePath
           };
         });
       }))
@@ -53,7 +54,12 @@ export class PostsService {
   };
 
   addPost(title: string, content: string, image: File) {
-    const post: Post = {id: null, title: title, content: content}; //create a new post variables of type Post
+    const post: Post = {
+      id: null,
+      title: title,
+      content: content,
+      imagePath: null // boo added this. check later
+    }; //create a new post variables of type Post
 
     //earlier the post was having only the json data. now with the image to be uploaded, we do the following
     //create a variable of type form data
@@ -62,15 +68,17 @@ export class PostsService {
     postData.append("content", content);
     postData.append("image", image, title);
 
+
     //seding post to the server
-    this.http.post<{message: string, postID: string}>(
+    this.http.post<{message: string, post: Post}>(
       'http://localhost:3000/api/posts',
       postData)
     .subscribe((responseData) => {
         const post: Post = {
-          id: responseData.postID,
+          id: responseData.post.id,
           title: title,
-          content: content
+          content: content,
+          imagePath: responseData.post.imagePath
         };
 
         console.log(responseData.message);
@@ -82,7 +90,7 @@ export class PostsService {
   }
 
   updatePost(id: string, title: string, content: string) {
-    const post: Post = {id: id, title: title, content: content};
+    const post: Post = {id: id, title: title, content: content, imagePath: null};
     this.http.put('http://localhost:3000/api/posts/' + id, post)
       .subscribe(response => {
         const updatedPosts = [...this.posts];
