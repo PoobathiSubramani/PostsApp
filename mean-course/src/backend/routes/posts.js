@@ -32,7 +32,7 @@ const storage = multer.diskStorage ({//tell where multer to put files
 
 )
 
-router.post("",multer({storage: storage}).single('image'), (req, res, next) => {
+router.post("", multer({storage: storage}).single('image'), (req, res, next) => {
 
   //creating the url for the server
   const url = req.protocol + '://' + req.get('host'); //protocol -> to know if it is http or https;
@@ -63,12 +63,24 @@ router.post("",multer({storage: storage}).single('image'), (req, res, next) => {
 //install boby-parser (npm install -save body-parser) module to help parse incoming requests and make it easier for furthur usage
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", multer({storage: storage}).single('image'), (req, res, next) => {
+  console.log(req.file);
+  let imagePath;
+  if(req.file) {
+    //creating the url for the server
+  const url = req.protocol + '://' + req.get('host'); //protocol -> to know if it is http or https;
+  imagePath = url + '/images/' +  req.file.filename;
+  } else {
+    imagePath = req.body.imagePath;
+  }
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    imagePath: imagePath
   });
+  console.log(post);
   Post.updateOne({_id: req.params.id}, post)
     .then( result => {
       console.log(result);

@@ -4,10 +4,15 @@ validates the image file
 
 import { AbstractControl } from '@angular/forms';
 //import { Promise } from 'protractor';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 export const mimeType = (
   control: AbstractControl): Promise <{[key: string]: any}> | Observable <{[key: string]: any}> => {
+  if (typeof(control.value) === "string"){
+    return of(null);
+  } else {
+    return;
+  };
   const file = control.value as File;
   const fileReader = new FileReader();
 

@@ -43,7 +43,7 @@ expressApp.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept");
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS");
+    "GET, POST, PATCH, DELETE, OPTIONS, PUT");
   next();
 })
 
