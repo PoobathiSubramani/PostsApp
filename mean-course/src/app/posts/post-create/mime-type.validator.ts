@@ -21,6 +21,7 @@ export const mimeType = (
       const arr = new Uint8Array (fileReader.result as ArrayBuffer).subarray(0,4);
       //Uint8array - unsigned 8 bit int array
       //subarray(0,4) gives the info about the mime type
+
       let isValid = false;
       let header = "";
       for (let i=0; i < arr.length; i++) {

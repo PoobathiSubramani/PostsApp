@@ -1,5 +1,5 @@
 <mat-accordion *ngIf="posts.length > 0">
-  <mat-expansion-panel *ngFor = "let post of posts">
+  <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{post.title}}
@@ -17,4 +17,12 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class= "info-text" *ngIf = "posts.length == 0"> no posts were added yet!</p>
+<p class="info-text" *ngIf="posts.length == 0"> no posts were added yet!</p>
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)=onChangedPage($event)> </mat-paginator>
+<!--
+  in the paginator control
+  (page) is the event
+  onChangedPage() - is a user defined method
+  $event - is the event object the paginator control gives, which is forwarded into the onChangedPage() method
+
+-->
