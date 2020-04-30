@@ -9,7 +9,8 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://dbuser:dbpwd09@boomongocluster-rcqr2.azure.mongodb.net/node-angular?retryWrites=true&w=majority"
+    "mongodb+srv://dbuser:dbpwd09@boomongocluster-rcqr2.azure.mongodb.net/node-angular?retryWrites=true&w=majority",
+    {useNewUrlParser: true, useUnifiedTopology: true} //added as per deprication warnings
   )
   .then(() => {
     console.log("Connected to database!");
@@ -17,6 +18,8 @@ mongoose
   .catch(() => {
     console.log("DB Connection failed!");
   });
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
