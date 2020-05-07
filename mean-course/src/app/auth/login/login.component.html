@@ -1,0 +1,22 @@
+<mat-card>
+  <form (submit)="onLogin(loginForm)" #loginForm="ngForm">
+    <div>
+      <mat-form-field>
+        <input matInput name="email" ngModel type="email" placeholder="Enter email" #emailInput="ngModel" required email>
+        <!-- #emailInput is the local reference and ngModel provides access to the underlying object-->
+        <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
+      </mat-form-field>
+
+    </div>
+    <div>
+      <mat-form-field>
+        <input matInput name="password" ngModel type="password" placeholder="Enter password" #passwordInput="ngModel" required>
+        <mat-error>Please enter a password</mat-error>
+      </mat-form-field>
+    </div>
+    <span>
+      <button mat-raised-button color="primary">Login</button>
+    </span>
+  </form>
+</mat-card>
+

@@ -1,0 +1,21 @@
+<mat-card>
+  <form #signupForm="ngForm" (submit)="onSignup(signupForm)">
+    <div>
+      <mat-form-field>
+        <input matInput ngModel #emailInput="ngModel" name="email" placeholder="email ID" required email>
+        <mat-error *ngIf="emailInput.invalid">Please enter a valid email</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput ngModel #passwordInput="ngModel" name="password" type="password" placeholder="Password" required>
+        <mat-error *ngIf="passwordInput.invalid">Pelase enter a password</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-raised-button color="primary" type="submit">Sign Up</button>
+    </div>
+  </form>
+</mat-card>
